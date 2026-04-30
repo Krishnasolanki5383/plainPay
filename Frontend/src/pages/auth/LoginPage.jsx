@@ -22,9 +22,11 @@ const inputClass = (touched, error) =>
 
 import { useDispatch } from 'react-redux';
 import { loginStart, loginSuccess, loginFailure } from '../../store';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: { email: '', password: '' },
@@ -42,6 +44,7 @@ const LoginForm = () => {
         
         if (response.ok) {
           dispatch(loginSuccess(data));
+          navigate('/dashboard');
         } else {
           dispatch(loginFailure(data.message));
           alert(data.message);

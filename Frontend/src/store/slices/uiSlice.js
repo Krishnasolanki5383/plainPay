@@ -4,6 +4,7 @@ const initialState = {
   darkMode: localStorage.getItem('darkMode') === 'true',
   sidebarOpen: true,
   currentTab: 'dashboard',
+  isAddTransactionModalOpen: false,
 };
 
 const uiSlice = createSlice({
@@ -28,8 +29,14 @@ const uiSlice = createSlice({
     setCurrentTab: (state, action) => {
       state.currentTab = action.payload;
     },
+    openAddTransactionModal: (state) => {
+      state.isAddTransactionModalOpen = true;
+    },
+    closeAddTransactionModal: (state) => {
+      state.isAddTransactionModalOpen = false;
+    },
   },
 });
 
-export const { toggleDarkMode, toggleSidebar, setSidebar, setCurrentTab } = uiSlice.actions;
+export const { toggleDarkMode, toggleSidebar, setSidebar, setCurrentTab, openAddTransactionModal, closeAddTransactionModal } = uiSlice.actions;
 export default uiSlice.reducer;

@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import RegisterPage from '../pages/auth/RegisterPage';
 import LoginPage from '../pages/auth/LoginPage';
 import Dashboard from '../pages/Dashboard';
+import Transactions from '../pages/Transactions';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import ProtectedRoute from '../components/common/ProtectedRoute';
 
@@ -18,6 +19,7 @@ const AppRouter = () => {
         <Route element={<ProtectedRoute />}>
           <Route element={<DashboardLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/transactions" element={<Transactions />} />
             {/* Add more private routes here */}
           </Route>
         </Route>
