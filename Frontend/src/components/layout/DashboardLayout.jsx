@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
+import AddTransactionModal from '../common/AddTransactionModal';
 
 const DashboardLayout = () => {
   return (
@@ -10,13 +11,15 @@ const DashboardLayout = () => {
       <Sidebar />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 relative">
         <Navbar />
 
         <main className="flex-1 p-8 overflow-auto">
           <Outlet />
         </main>
       </div>
+      
+      <AddTransactionModal />
     </div>
   );
 };

@@ -26,6 +26,8 @@ const Navbar = () => {
   const location = useLocation();
 
   const title = getPageTitle(location.pathname);
+  const auth = useSelector(state => state.auth);
+  const userName = auth?.user?.name || 'User';
 
   return (
     <header className="h-24 bg-transparent flex items-center justify-between px-8 sticky top-0 z-10 pt-4">
@@ -33,7 +35,11 @@ const Navbar = () => {
         <button onClick={() => dispatch(toggleSidebar())} className="text-gray-500 hover:text-gray-700 lg:hidden">
           {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
-        <h2 className="text-3xl font-bold text-slate-800">{title}</h2>
+        {location.pathname === '/transactions' ? (
+          <p className="text-sm text-slate-400">Welcome back, <span className="font-bold text-slate-700">{userName}</span></p>
+        ) : (
+          <h2 className="text-3xl font-bold text-slate-800">{title}</h2>
+        )}
       </div>
       
       <div className="flex items-center gap-6">

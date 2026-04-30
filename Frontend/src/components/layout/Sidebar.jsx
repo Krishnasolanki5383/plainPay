@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { LayoutDashboard, Receipt, Calendar, Wallet, HelpCircle, LogOut, Plus } from 'lucide-react';
-import { selectUI, logout } from '../../store';
+import { selectUI, logout, openAddTransactionModal } from '../../store';
 
 const navItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
@@ -69,7 +69,10 @@ const Sidebar = () => {
 
         {/* Bottom Section */}
         <div className="p-4 flex flex-col gap-2">
-          <button className={`w-full flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl transition-colors mb-4 ${!sidebarOpen && 'lg:px-0 lg:py-3 lg:justify-center'}`}>
+          <button 
+            onClick={() => dispatch(openAddTransactionModal())}
+            className={`w-full flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl transition-colors mb-4 ${!sidebarOpen && 'lg:px-0 lg:py-3 lg:justify-center'}`}
+          >
             <Plus size={20} />
             <span className={`text-sm font-medium transition-opacity ${!sidebarOpen && 'lg:hidden'}`}>
               Add Transaction

@@ -47,6 +47,14 @@ const dashboardData = {
   }
 };
 
+let transactionsData = [
+  { id: 1, name: 'Whole Foods Market', account: 'Amex • Gold Card', amount: -124.80, time: 'TODAY, 2:45 PM', category: 'Groceries' },
+  { id: 2, name: 'John Doe (Split Bill)', account: 'UPI • HDFC Bank', amount: 42.00, time: 'TODAY, 11:20 AM', category: 'Transfer' },
+  { id: 3, name: 'Delta Airlines', account: 'Visa • Corporate', amount: -652.00, time: 'YESTERDAY, 9:00 PM', category: 'Travel' },
+  { id: 4, name: 'Uber Technologies', account: 'Wallet • PlainPay Credit', amount: -18.40, time: 'YESTERDAY, 4:15 PM', category: 'Transport' },
+  { id: 5, name: 'Consolidated Edison', account: 'ACH • Chase Checking', amount: -210.15, time: 'JAN 24, 2024', category: 'Bills' },
+];
+
 // Auth Endpoints (Mock)
 app.post('/api/auth/register', (req, res) => {
   const { name, email, password } = req.body;
@@ -76,6 +84,39 @@ app.post('/api/auth/login', (req, res) => {
 
 app.get('/api/dashboard', (req, res) => {
   res.json(dashboardData);
+});
+
+app.get('/api/transactions', (req, res) => {
+  res.json({
+    summary: {
+      totalSpent: 2840.50,
+      highestCategory: 'Dining Out',
+      highestCategoryPercentage: 42,
+      connectedAccounts: 8
+    },
+    transactions: transactionsData
+  });
+});
+
+app.post('/api/transactions', (req, res) => {
+  const { name, account, amount, category } = req.body;
+  if (!name || !amount) {
+    return res.status(400).json({ message: 'Name and amount are required' });
+  }
+  
+  const newTransaction = {
+    id: transactionsData.length + 1,
+    name,
+    account: account || 'Wallet • PlainPay',
+    amount: parseFloat(amount),
+    time: 'JUST NOW',
+    category: category || 'Misc'
+  };
+  
+  // Prepend to the beginning
+  transactionsData.unshift(newTransaction);
+  
+  res.status(201).json(newTransaction);
 });
 
 app.listen(PORT, () => {
