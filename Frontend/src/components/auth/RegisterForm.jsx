@@ -20,12 +20,40 @@ const inputClass = (touched, error) =>
       : 'border-gray-200 focus:border-green-700 focus:ring-2 focus:ring-green-100'
   }`;
 
+import { useDispatch } from 'react-redux';
+import { loginStart, loginSuccess, loginFailure } from '../../store';
+
 const RegisterForm = () => {
+  const dispatch = useDispatch();
+
   const formik = useFormik({
     initialValues: { fullName: '', email: '', password: '', terms: false },
     validationSchema,
-    onSubmit: (values) => {
-      console.log('Register payload:', values);
+    onSubmit: async (values) => {
+      try {
+        dispatch(loginStart());
+        const response = await fetch('http://localhost:5000/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: values.fullName,
+            email: values.email,
+            password: values.password
+          }),
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          dispatch(loginSuccess(data));
+        } else {
+          dispatch(loginFailure(data.message));
+          alert(data.message);
+        }
+      } catch (error) {
+        dispatch(loginFailure('Network error'));
+        alert('Network error');
+      }
     },
   });
 

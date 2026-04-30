@@ -5,7 +5,7 @@ import Navbar from './Navbar';
 
 const DashboardLayout = () => {
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-[#f8f9fd] flex">
       {/* Sidebar */}
       <Sidebar />
 
@@ -13,7 +13,7 @@ const DashboardLayout = () => {
       <div className="flex-1 flex flex-col min-w-0">
         <Navbar />
 
-        <main className="flex-1 p-6 overflow-auto">
+        <main className="flex-1 p-8 overflow-auto">
           <Outlet />
         </main>
       </div>

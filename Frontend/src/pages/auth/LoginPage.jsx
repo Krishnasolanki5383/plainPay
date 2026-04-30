@@ -20,12 +20,36 @@ const inputClass = (touched, error) =>
       : 'border-gray-200 focus:border-green-700 focus:ring-2 focus:ring-green-100'
   }`;
 
+import { useDispatch } from 'react-redux';
+import { loginStart, loginSuccess, loginFailure } from '../../store';
+
 const LoginForm = () => {
+  const dispatch = useDispatch();
+
   const formik = useFormik({
     initialValues: { email: '', password: '' },
     validationSchema,
-    onSubmit: (values) => {
-      console.log('Login payload:', values);
+    onSubmit: async (values) => {
+      try {
+        dispatch(loginStart());
+        const response = await fetch('http://localhost:5000/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(values),
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          dispatch(loginSuccess(data));
+        } else {
+          dispatch(loginFailure(data.message));
+          alert(data.message);
+        }
+      } catch (error) {
+        dispatch(loginFailure('Network error'));
+        alert('Network error');
+      }
     },
   });
 

@@ -1,21 +1,21 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Wallet, Receipt, PieChart, Settings, LogOut } from 'lucide-react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { LayoutDashboard, Receipt, Calendar, Wallet, HelpCircle, LogOut, Plus } from 'lucide-react';
 import { selectUI, logout } from '../../store';
 
 const navItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
+  { icon: Receipt, label: 'Transactions', path: '/transactions' },
+  { icon: Calendar, label: 'Subscriptions', path: '/subscriptions' },
   { icon: Wallet, label: 'Budgets', path: '/budgets' },
-  { icon: Receipt, label: 'Expenses', path: '/expenses' },
-  { icon: PieChart, label: 'Analytics', path: '/analytics' },
-  { icon: Settings, label: 'Settings', path: '/settings' },
 ];
 
 const Sidebar = () => {
   const { sidebarOpen } = useSelector(selectUI);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = () => {
     dispatch(logout());
@@ -24,40 +24,72 @@ const Sidebar = () => {
 
   return (
     <aside 
-      className={`bg-emerald-900 text-white fixed lg:static inset-y-0 left-0 z-50 transition-all duration-300 transform ${
+      className={`bg-white text-gray-600 fixed lg:static inset-y-0 left-0 z-50 transition-all duration-300 transform border-r border-gray-100 ${
         sidebarOpen ? 'w-64 translate-x-0' : 'w-20 -translate-x-full lg:translate-x-0'
       }`}
     >
       <div className="flex flex-col h-full">
-        <div className="h-16 flex items-center px-6 border-b border-emerald-800">
-          <span className={`font-bold text-xl tracking-tight transition-opacity ${!sidebarOpen && 'lg:opacity-0'}`}>
-            PlainPay
-          </span>
+        {/* Logo Section */}
+        <div className="h-24 flex items-center px-6 pt-4">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center shrink-0">
+              <div className="w-4 h-4 bg-transparent border-2 border-white rounded-sm flex items-center justify-center">
+                 <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
+              </div>
+            </div>
+            <div className={`transition-opacity ${!sidebarOpen && 'lg:hidden'}`}>
+              <h1 className="font-bold text-xl text-emerald-600 leading-tight">PlainPay</h1>
+              <p className="text-[10px] text-gray-400 font-semibold tracking-wider">FINANCIAL SERENITY</p>
+            </div>
+          </div>
         </div>
 
-        <nav className="flex-1 px-4 py-6 space-y-2">
-          {navItems.map((item) => (
-            <Link
-              key={item.label}
-              to={item.path}
-              className="flex items-center gap-4 px-3 py-3 rounded-xl hover:bg-emerald-800 transition-colors group"
-            >
-              <item.icon size={20} className="flex-shrink-0" />
-              <span className={`text-sm font-medium transition-opacity ${!sidebarOpen && 'lg:hidden'}`}>
-                {item.label}
-              </span>
-            </Link>
-          ))}
+        {/* Navigation Section */}
+        <nav className="flex-1 px-4 py-6 space-y-1">
+          {navItems.map((item) => {
+            const isActive = location.pathname === item.path || (item.path === '/dashboard' && location.pathname === '/');
+            return (
+              <Link
+                key={item.label}
+                to={item.path}
+                className={`flex items-center gap-4 px-3 py-3 rounded-xl transition-colors group ${
+                  isActive 
+                    ? 'bg-emerald-50 text-emerald-600 font-medium' 
+                    : 'hover:bg-gray-50 text-gray-500 hover:text-gray-900'
+                }`}
+              >
+                <item.icon size={20} className="flex-shrink-0" />
+                <span className={`text-sm transition-opacity ${!sidebarOpen && 'lg:hidden'}`}>
+                  {item.label}
+                </span>
+              </Link>
+            );
+          })}
         </nav>
 
-        <div className="p-4 border-t border-emerald-800">
+        {/* Bottom Section */}
+        <div className="p-4 flex flex-col gap-2">
+          <button className={`w-full flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl transition-colors mb-4 ${!sidebarOpen && 'lg:px-0 lg:py-3 lg:justify-center'}`}>
+            <Plus size={20} />
+            <span className={`text-sm font-medium transition-opacity ${!sidebarOpen && 'lg:hidden'}`}>
+              Add Transaction
+            </span>
+          </button>
+
+          <Link to="/help" className="flex items-center gap-4 px-3 py-3 rounded-xl hover:bg-gray-50 text-gray-500 hover:text-gray-900 transition-colors group">
+            <HelpCircle size={20} className="flex-shrink-0" />
+            <span className={`text-sm font-medium transition-opacity ${!sidebarOpen && 'lg:hidden'}`}>
+              Help
+            </span>
+          </Link>
+
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-4 px-3 py-3 rounded-xl hover:bg-red-900/40 text-red-100 transition-colors group"
+            className="w-full flex items-center gap-4 px-3 py-3 rounded-xl hover:bg-gray-50 text-gray-500 hover:text-gray-900 transition-colors group"
           >
             <LogOut size={20} className="flex-shrink-0" />
             <span className={`text-sm font-medium transition-opacity ${!sidebarOpen && 'lg:hidden'}`}>
-              Sign Out
+              Logout
             </span>
           </button>
         </div>
