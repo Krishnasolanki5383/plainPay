@@ -20,42 +20,70 @@ const inputClass = (touched, error) =>
       : 'border-gray-200 focus:border-green-700 focus:ring-2 focus:ring-green-100'
   }`;
 
+import { useDispatch } from 'react-redux';
+import { loginStart, loginSuccess, loginFailure } from '../../store';
+
 const RegisterForm = () => {
+  const dispatch = useDispatch();
+
   const formik = useFormik({
     initialValues: { fullName: '', email: '', password: '', terms: false },
     validationSchema,
-    onSubmit: (values) => {
-      console.log('Register payload:', values);
+    onSubmit: async (values) => {
+      try {
+        dispatch(loginStart());
+        const response = await fetch('http://localhost:5000/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: values.fullName,
+            email: values.email,
+            password: values.password
+          }),
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+          dispatch(loginSuccess(data));
+        } else {
+          dispatch(loginFailure(data.message));
+          alert(data.message);
+        }
+      } catch (error) {
+        dispatch(loginFailure('Network error'));
+        alert('Network error');
+      }
     },
   });
 
   const f = formik;
 
   return (
-    <div className="bg-white rounded-2xl p-8 shadow-sm">
-      <h2 className="text-3xl font-bold mb-1" style={{ color: '#111827' }}>
+    <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+      <h2 className="text-2xl font-bold mb-1 text-gray-900">
         Create Account
       </h2>
-      <p className="text-sm mb-6" style={{ color: '#6b7280' }}>
+      <p className="text-xs mb-4 text-gray-500">
         Start your journey to better financial health today.
       </p>
 
       <SocialButtons mode="signup" />
 
       {/* Divider */}
-      <div className="flex items-center gap-3 my-5">
-        <div className="flex-1 h-px" style={{ backgroundColor: '#e5e7eb' }} />
-        <span className="text-xs uppercase tracking-widest" style={{ color: '#9ca3af' }}>
+      <div className="flex items-center gap-3 my-4">
+        <div className="flex-1 h-px bg-gray-100" />
+        <span className="text-[10px] uppercase tracking-widest text-gray-400">
           or continue with email
         </span>
-        <div className="flex-1 h-px" style={{ backgroundColor: '#e5e7eb' }} />
+        <div className="flex-1 h-px bg-gray-100" />
       </div>
 
-      <form onSubmit={f.handleSubmit} className="flex flex-col gap-4" noValidate>
+      <form onSubmit={f.handleSubmit} className="flex flex-col gap-3" noValidate>
 
         {/* Full Name */}
         <div>
-          <label className="block text-sm font-medium mb-1" style={{ color: '#374151' }}>
+          <label className="block text-xs font-medium mb-1 text-gray-700">
             Full Name
           </label>
           <input
@@ -66,13 +94,13 @@ const RegisterForm = () => {
             className={inputClass(f.touched.fullName, f.errors.fullName)}
           />
           {f.touched.fullName && f.errors.fullName && (
-            <p className="text-xs mt-1" style={{ color: '#ef4444' }}>{f.errors.fullName}</p>
+            <p className="text-[10px] mt-1 text-red-500">{f.errors.fullName}</p>
           )}
         </div>
 
         {/* Email */}
         <div>
-          <label className="block text-sm font-medium mb-1" style={{ color: '#374151' }}>
+          <label className="block text-xs font-medium mb-1 text-gray-700">
             Email Address
           </label>
           <input
@@ -83,13 +111,13 @@ const RegisterForm = () => {
             className={inputClass(f.touched.email, f.errors.email)}
           />
           {f.touched.email && f.errors.email && (
-            <p className="text-xs mt-1" style={{ color: '#ef4444' }}>{f.errors.email}</p>
+            <p className="text-[10px] mt-1 text-red-500">{f.errors.email}</p>
           )}
         </div>
 
         {/* Password */}
         <div>
-          <label className="block text-sm font-medium mb-1" style={{ color: '#374151' }}>
+          <label className="block text-xs font-medium mb-1 text-gray-700">
             Password
           </label>
           <input
@@ -101,54 +129,36 @@ const RegisterForm = () => {
           />
           <PasswordStrength password={f.values.password} />
           {f.touched.password && f.errors.password && (
-            <p className="text-xs mt-1" style={{ color: '#ef4444' }}>{f.errors.password}</p>
+            <p className="text-[10px] mt-1 text-red-500">{f.errors.password}</p>
           )}
         </div>
 
         {/* Terms */}
-        <div className="flex items-start gap-3">
+        <div className="flex items-start gap-2">
           <input
             id="register-terms"
             type="checkbox"
             {...f.getFieldProps('terms')}
-            className="mt-0.5 accent-green-700 w-4 h-4 cursor-pointer"
+            className="mt-0.5 accent-emerald-700 w-3.5 h-3.5 cursor-pointer"
           />
-          <label htmlFor="register-terms" className="text-xs cursor-pointer" style={{ color: '#6b7280' }}>
-            By signing up, you agree to our{' '}
-            <a href="#" className="font-medium hover:underline" style={{ color: '#15803d' }}>Terms of Service</a>
-            {' '}and{' '}
-            <a href="#" className="font-medium hover:underline" style={{ color: '#15803d' }}>Privacy Policy</a>.
+          <label htmlFor="register-terms" className="text-[10px] leading-relaxed cursor-pointer text-gray-500">
+            I agree to the <a href="#" className="text-emerald-700 font-medium hover:underline">Terms</a> and <a href="#" className="text-emerald-700 font-medium hover:underline">Privacy</a>.
           </label>
         </div>
-        {f.touched.terms && f.errors.terms && (
-          <p className="text-xs -mt-2" style={{ color: '#ef4444' }}>{f.errors.terms}</p>
-        )}
 
         {/* Submit */}
         <button
           id="register-submit-btn"
           type="submit"
-          className="w-full py-3 rounded-xl text-white font-semibold text-sm transition-all duration-200 hover:opacity-90 active:scale-95"
-          style={{ backgroundColor: '#14532d' }}
+          className="w-full py-2.5 rounded-xl text-white font-semibold text-sm transition-all duration-200 hover:bg-emerald-900 active:scale-95 bg-emerald-800"
         >
           Create Account
         </button>
       </form>
 
-      {/* Security badge */}
-      <div className="mt-5 p-4 rounded-xl flex gap-3" style={{ backgroundColor: '#f0fdf4' }}>
-        <Lock size={18} style={{ color: '#15803d', marginTop: '2px', flexShrink: 0 }} />
-        <div>
-          <p className="text-xs font-semibold" style={{ color: '#15803d' }}>Secure & Encrypted</p>
-          <p className="text-xs mt-0.5" style={{ color: '#166534' }}>
-            Your connection is secured using industry-standard TLS encryption. We never share your data.
-          </p>
-        </div>
-      </div>
-
-      <p className="text-center text-sm mt-6" style={{ color: '#6b7280' }}>
+      <p className="text-center text-xs mt-4 text-gray-500">
         Already have an account?{' '}
-        <Link to="/login" className="font-semibold hover:underline" style={{ color: '#15803d' }}>
+        <Link to="/login" className="font-semibold text-emerald-700 hover:underline">
           Log in
         </Link>
       </p>
