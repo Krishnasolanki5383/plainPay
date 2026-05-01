@@ -63,6 +63,13 @@ let subscriptionsData = [
   { id: 5, name: 'Dropbox Plus', plan: '2TB Personal Storage', amount: 11.99, nextRenewal: 'Suspended', status: 'ON HOLD', color: 'bg-blue-400', icon: 'dropbox', category: 'Productivity' },
 ];
 
+let budgetsData = [
+  { id: 1, category: 'Food & Dining', totalAmount: 600, spentAmount: 480, color: 'bg-orange-500' },
+  { id: 2, category: 'Rent & Utilities', totalAmount: 1800, spentAmount: 1710, color: 'bg-blue-500' },
+  { id: 3, category: 'Shopping', totalAmount: 400, spentAmount: 140, color: 'bg-purple-400' },
+  { id: 4, category: 'Transport', totalAmount: 250, spentAmount: 137.5, color: 'bg-emerald-400' },
+];
+
 // Auth Endpoints (Mock)
 app.post('/api/auth/register', (req, res) => {
   const { name, email, password } = req.body;
@@ -175,6 +182,29 @@ app.delete('/api/subscriptions/:id', (req, res) => {
   subscriptionsData = subscriptionsData.filter(sub => sub.id !== id);
   res.status(200).json({ message: 'Deleted successfully' });
 });
+
+app.get('/api/budgets', (req, res) => {
+  res.json(budgetsData);
+});
+
+app.put('/api/budgets/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const { totalAmount } = req.body;
+  
+  const budgetIndex = budgetsData.findIndex(b => b.id === id);
+  if (budgetIndex === -1) {
+    return res.status(404).json({ message: 'Budget not found' });
+  }
+  
+  if (totalAmount === undefined || isNaN(totalAmount)) {
+    return res.status(400).json({ message: 'Valid totalAmount is required' });
+  }
+
+  budgetsData[budgetIndex].totalAmount = parseFloat(totalAmount);
+  
+  res.json(budgetsData[budgetIndex]);
+});
+
 
 app.listen(PORT, () => {
   console.log(`Backend server running on port ${PORT}`);
