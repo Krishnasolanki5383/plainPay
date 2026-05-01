@@ -40,15 +40,15 @@ const Dashboard = () => {
     <div className="space-y-6 max-w-6xl mx-auto pb-10">
       
       {/* Top Card */}
-      <div className="bg-white rounded-3xl p-8 flex justify-between items-center shadow-sm">
-        <div className="max-w-xl">
+      <div className="bg-white rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row justify-between items-center gap-6 shadow-sm">
+        <div className="max-w-xl text-center md:text-left">
           <h2 className="text-2xl font-bold text-slate-800 mb-2">Good morning, Alex.</h2>
           <p className="text-slate-500 text-lg">
             You've spent <span className="font-bold text-emerald-600">${summary.spentToday}</span> today, mostly on your <span className="font-bold text-slate-700">{summary.topExpenses[0]}</span> and <span className="font-bold text-slate-700">{summary.topExpenses[1]}</span>. You have <span className="font-bold text-blue-600">${summary.remainingBudget}</span> left in your daily budget.
           </p>
         </div>
         
-        <div className="bg-[#f3f7fa] rounded-2xl p-6 min-w-[200px] text-center">
+        <div className="bg-[#f3f7fa] rounded-2xl p-6 w-full md:w-auto md:min-w-[200px] text-center shrink-0">
           <p className="text-[11px] font-bold text-slate-400 tracking-wider mb-2 uppercase">Daily Remaining</p>
           <p className="text-4xl font-bold text-emerald-600 mb-4">${summary.remainingBudget}</p>
           <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
@@ -63,8 +63,8 @@ const Dashboard = () => {
         <div className="lg:col-span-2 space-y-6">
           
           {/* Weekly Trend */}
-          <div className="bg-white rounded-3xl p-8 shadow-sm">
-            <div className="flex justify-between items-start mb-8">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm">
+            <div className="flex flex-col sm:flex-row justify-between items-start mb-8 gap-4">
               <div>
                 <h3 className="text-xl font-bold text-slate-800">Weekly Trend</h3>
                 <p className="text-slate-400 text-sm">Spending across main categories</p>
@@ -135,17 +135,17 @@ const Dashboard = () => {
               {recentTransactions.map((tx) => {
                 const Icon = getIconForTransaction(tx.name, tx.category);
                 return (
-                  <div key={tx.id} className="flex items-center justify-between group">
-                    <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-500 group-hover:bg-emerald-50 group-hover:text-emerald-600 transition-colors">
+                  <div key={tx.id} className="flex items-center justify-between gap-2 group">
+                    <div className="flex items-center gap-3 sm:gap-4 overflow-hidden">
+                      <div className="w-10 h-10 shrink-0 rounded-full bg-slate-50 flex items-center justify-center text-slate-500 group-hover:bg-emerald-50 group-hover:text-emerald-600 transition-colors">
                         <Icon size={18} />
                       </div>
-                      <div>
-                        <p className="font-bold text-slate-800 text-sm">{tx.name}</p>
-                        <p className="text-xs text-slate-400">{tx.time} • {tx.category}</p>
+                      <div className="min-w-0">
+                        <p className="font-bold text-slate-800 text-sm truncate">{tx.name}</p>
+                        <p className="text-xs text-slate-400 truncate">{tx.time} • {tx.category}</p>
                       </div>
                     </div>
-                    <span className="font-bold text-slate-700 text-sm">
+                    <span className="font-bold text-slate-700 text-sm shrink-0">
                       {tx.amount < 0 ? `-$${Math.abs(tx.amount).toFixed(2)}` : `$${tx.amount.toFixed(2)}`}
                     </span>
                   </div>
@@ -154,7 +154,7 @@ const Dashboard = () => {
             </div>
             
             <div className="mt-6 bg-[#f2f8fc] rounded-2xl p-4 flex gap-3">
-              <div className="text-emerald-500 mt-0.5">
+              <div className="text-emerald-500 mt-0.5 shrink-0">
                 <div className="w-4 h-4 rounded-full border-2 border-current flex items-center justify-center">
                   <span className="w-1 h-1 bg-current rounded-full"></span>
                 </div>
@@ -165,38 +165,38 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Upcoming Payment */}
-            <div className="bg-[#e4ebfd] rounded-3xl p-6 col-span-1 shadow-sm">
+            <div className="bg-[#e4ebfd] rounded-3xl p-6 shadow-sm">
               <div className="flex justify-between items-start mb-6">
                 <p className="text-[10px] font-bold text-slate-500 tracking-wider uppercase">Upcoming</p>
-                <Calendar size={16} className="text-slate-500" />
+                <Calendar size={16} className="text-slate-500 shrink-0" />
               </div>
-              <p className="text-slate-800 font-bold mb-4">{upcomingPayment.name}</p>
+              <p className="text-slate-800 font-bold mb-4 truncate">{upcomingPayment.name}</p>
               <p className="text-xs text-slate-500 mb-1">Due in {upcomingPayment.dueInDays} days</p>
               <p className="text-2xl font-bold text-slate-700">${upcomingPayment.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</p>
             </div>
 
             {/* Security Controls */}
-            <div className="bg-white rounded-3xl p-6 col-span-1 shadow-sm border border-slate-50">
+            <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-50">
               <div className="flex justify-between items-start mb-6">
                 <p className="text-[10px] font-bold text-slate-400 tracking-wider uppercase">Security</p>
-                <div className="w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center">
+                <div className="w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center shrink-0">
                   <ShieldCheck size={12} className="text-white" />
                 </div>
               </div>
               <p className="text-slate-800 font-bold mb-4">Card Controls</p>
               
               <div className="space-y-3">
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center gap-2">
                   <span className="text-xs font-medium text-slate-600">Online Payments</span>
-                  <div className={`w-8 h-4 rounded-full flex items-center p-0.5 cursor-pointer ${securityControls.onlinePayments ? 'bg-emerald-400 justify-end' : 'bg-slate-200 justify-start'}`}>
+                  <div className={`w-8 h-4 rounded-full flex items-center p-0.5 cursor-pointer shrink-0 ${securityControls.onlinePayments ? 'bg-emerald-400 justify-end' : 'bg-slate-200 justify-start'}`}>
                     <div className="w-3 h-3 bg-white rounded-full shadow-sm"></div>
                   </div>
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center gap-2">
                   <span className="text-xs font-medium text-slate-600">Contactless</span>
-                  <div className={`w-8 h-4 rounded-full flex items-center p-0.5 cursor-pointer ${securityControls.contactless ? 'bg-emerald-400 justify-end' : 'bg-slate-200 justify-start'}`}>
+                  <div className={`w-8 h-4 rounded-full flex items-center p-0.5 cursor-pointer shrink-0 ${securityControls.contactless ? 'bg-emerald-400 justify-end' : 'bg-slate-200 justify-start'}`}>
                     <div className="w-3 h-3 bg-white rounded-full shadow-sm"></div>
                   </div>
                 </div>

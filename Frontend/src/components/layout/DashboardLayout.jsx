@@ -18,6 +18,23 @@ const DashboardLayout = () => {
     }
   }, [location.pathname, dispatch]);
 
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        dispatch(setSidebar(true));
+      } else {
+        dispatch(setSidebar(false));
+      }
+    };
+    
+    window.addEventListener('resize', handleResize);
+    // Initial check
+    handleResize();
+    
+    return () => window.removeEventListener('resize', handleResize);
+  }, [dispatch]);
+
   return (
     <div className="min-h-screen bg-[#f8f9fd] flex overflow-hidden">
       {/* Mobile overlay */}
