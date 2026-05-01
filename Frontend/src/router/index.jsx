@@ -4,6 +4,7 @@ import RegisterPage from '../pages/auth/RegisterPage';
 import LoginPage from '../pages/auth/LoginPage';
 import Dashboard from '../pages/Dashboard';
 import Transactions from '../pages/Transactions';
+import Subscriptions from '../pages/Subscriptions';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import ProtectedRoute from '../components/common/ProtectedRoute';
 
@@ -20,6 +21,7 @@ const AppRouter = () => {
           <Route element={<DashboardLayout />}>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/transactions" element={<Transactions />} />
+            <Route path="/subscriptions" element={<Subscriptions />} />
             {/* Add more private routes here */}
           </Route>
         </Route>
