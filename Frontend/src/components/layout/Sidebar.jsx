@@ -24,7 +24,7 @@ const Sidebar = () => {
 
   return (
     <aside 
-      className={`bg-white text-gray-600 fixed lg:static inset-y-0 left-0 z-50 transition-all duration-300 transform border-r border-gray-100 ${
+      className={`bg-white text-gray-600 fixed lg:static inset-y-0 left-0 z-50 transition-all duration-300 transform border-r border-gray-100 overflow-hidden ${
         sidebarOpen ? 'w-64 translate-x-0' : 'w-20 -translate-x-full lg:translate-x-0'
       }`}
     >
@@ -71,7 +71,8 @@ const Sidebar = () => {
         <div className="p-4 flex flex-col gap-2">
           <button 
             onClick={() => dispatch(openAddTransactionModal())}
-            className={`w-full flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl transition-colors mb-4 ${!sidebarOpen && 'lg:px-0 lg:py-3 lg:justify-center'}`}
+            className={`w-full flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-xl transition-colors mb-4 ${!sidebarOpen && 'lg:px-0 lg:justify-center'}`}
+            title="Add Transaction"
           >
             <Plus size={20} />
             <span className={`text-sm font-medium transition-opacity ${!sidebarOpen && 'lg:hidden'}`}>
@@ -79,7 +80,11 @@ const Sidebar = () => {
             </span>
           </button>
 
-          <Link to="/help" className="flex items-center gap-4 px-3 py-3 rounded-xl hover:bg-gray-50 text-gray-500 hover:text-gray-900 transition-colors group">
+          <Link 
+            to="/help" 
+            className={`flex items-center gap-4 px-3 py-3 rounded-xl hover:bg-gray-50 text-gray-500 hover:text-gray-900 transition-colors group ${!sidebarOpen && 'lg:justify-center lg:px-0'}`}
+            title="Help"
+          >
             <HelpCircle size={20} className="flex-shrink-0" />
             <span className={`text-sm font-medium transition-opacity ${!sidebarOpen && 'lg:hidden'}`}>
               Help
@@ -88,7 +93,8 @@ const Sidebar = () => {
 
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-4 px-3 py-3 rounded-xl hover:bg-gray-50 text-gray-500 hover:text-gray-900 transition-colors group"
+            className={`w-full flex items-center gap-4 px-3 py-3 rounded-xl hover:bg-gray-50 text-gray-500 hover:text-gray-900 transition-colors group ${!sidebarOpen && 'lg:justify-center lg:px-0'}`}
+            title="Logout"
           >
             <LogOut size={20} className="flex-shrink-0" />
             <span className={`text-sm font-medium transition-opacity ${!sidebarOpen && 'lg:hidden'}`}>

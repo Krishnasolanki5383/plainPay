@@ -5,6 +5,7 @@ import LoginPage from '../pages/auth/LoginPage';
 import Dashboard from '../pages/Dashboard';
 import Transactions from '../pages/Transactions';
 import Subscriptions from '../pages/Subscriptions';
+import Budgets from '../pages/Budgets';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import ProtectedRoute from '../components/common/ProtectedRoute';
 
@@ -22,6 +23,7 @@ const AppRouter = () => {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/transactions" element={<Transactions />} />
             <Route path="/subscriptions" element={<Subscriptions />} />
+            <Route path="/budgets" element={<Budgets />} />
             {/* Add more private routes here */}
           </Route>
         </Route>
