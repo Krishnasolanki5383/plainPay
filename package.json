@@ -1,0 +1,7 @@
+{
+  "name": "plainpay-root",
+  "private": true,
+  "scripts": {
+    "vercel-build": "cd Frontend && npm install && npm run build && cd .. && rm -rf public && cp -r Frontend/dist public"
+  }
+}
