@@ -3,7 +3,7 @@
   "outputDirectory": "Frontend/dist",
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/:path*",
       "destination": "/index.html"
     }
   ]
