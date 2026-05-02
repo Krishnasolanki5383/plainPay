@@ -17,7 +17,7 @@ const Transactions = () => {
   const [filterType, setFilterType] = useState('All');
 
   const fetchTransactions = () => {
-    fetch('http://localhost:5000/api/transactions')
+    fetch('https://plainpay.onrender.com/api/transactions')
       .then(res => res.json())
       .then(fetchedData => {
         setData(fetchedData);
