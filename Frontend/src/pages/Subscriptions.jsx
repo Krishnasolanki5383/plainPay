@@ -11,7 +11,7 @@ const Subscriptions = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:5000/api/subscriptions');
+      const res = await fetch('https://plainpay.onrender.com/api/subscriptions');
       const json = await res.json();
       setData(json);
     } catch (err) {
@@ -27,7 +27,7 @@ const Subscriptions = () => {
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`http://localhost:5000/api/subscriptions/${id}`, { method: 'DELETE' });
+      await fetch(`https://plainpay.onrender.com/api/subscriptions/${id}`, { method: 'DELETE' });
       fetchData();
     } catch (err) {
       console.error("Failed to delete subscription", err);

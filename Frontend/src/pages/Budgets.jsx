@@ -11,7 +11,7 @@ const Budgets = () => {
   const fetchBudgets = async () => {
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:5000/api/budgets');
+      const res = await fetch('https://plainpay.onrender.com/api/budgets');
       if (res.ok) {
         const data = await res.json();
         setBudgets(data);

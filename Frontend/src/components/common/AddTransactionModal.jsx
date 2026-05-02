@@ -31,7 +31,7 @@ const AddTransactionModal = ({ onTransactionAdded }) => {
     const finalAmount = formData.type === 'expense' ? -Math.abs(Number(formData.amount)) : Math.abs(Number(formData.amount));
     
     try {
-      const response = await fetch('http://localhost:5000/api/transactions', {
+      const response = await fetch('https://plainpay.onrender.com/api/transactions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...formData, amount: finalAmount })
