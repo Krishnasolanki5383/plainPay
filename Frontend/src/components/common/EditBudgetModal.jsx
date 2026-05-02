@@ -27,7 +27,7 @@ const EditBudgetModal = ({ isOpen, onClose, budget, onUpdate }) => {
 
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/budgets/${budget.id}`, {
+      const res = await fetch(`https://plainpay.onrender.com/api/budgets/${budget.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
